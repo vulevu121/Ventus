@@ -1,0 +1,48 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="CustomEdit" parent="@style/Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/lightgray</item>
+        <item name="android:backgroundTint">@color/lightgray</item>
+        <item name="android:textColorHint">@color/lightgray</item>
+    </style>
+
+    <style name="CustomButton" parent="@style/Widget.AppCompat.Button">
+        <item name="android:background">@drawable/custom_button</item>
+        <item name="android:textColor">@color/darkgray</item>
+    </style>
+
+    <style name="RoundButtonWhite" parent="@style/Widget.AppCompat.Button">
+        <item name="android:background">@drawable/round_bg_white</item>
+        <item name="android:textColor">@color/darkgray</item>
+    </style>
+
+
+    <style name="NakedButton" parent="@style/Widget.AppCompat.Button">
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/offwhite</item>
+    </style>
+
+
+    <style name="CustomListView" parent="@style/Widget.AppCompat.ListView">
+        <item name="android:textColor">@color/lightgray</item>
+    </style>
+
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>

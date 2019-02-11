@@ -1,0 +1,31 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.vle.ventus.TabActivity">
+
+    <item
+        android:id="@+id/action_refresh"
+        android:icon="@drawable/baseline_refresh_24px"
+        android:title="Refresh"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_save"
+        android:icon="@drawable/baseline_cloud_upload_24px"
+        android:title="Save"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:icon="@drawable/baseline_settings_24px"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/action_logout"
+        android:title="Log Out"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_about"
+        android:title="About"
+        app:showAsAction="never"/>
+</menu>
