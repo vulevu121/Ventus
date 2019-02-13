@@ -243,7 +243,7 @@ public class TabRoom extends Fragment {
                 holder.room_battery_percent.setText("N/A");
             }
 
-
+            // on click listeners for up and down buttons
             holder.room_temp_up.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
