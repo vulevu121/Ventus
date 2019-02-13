@@ -1,12 +1,15 @@
 package com.vle.ventus;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -29,6 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
+
+
 
 public class TabRoom extends Fragment {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -72,7 +77,7 @@ public class TabRoom extends Fragment {
         myAdapter = new RecyclerViewAdapter(getActivity(), RoomList);
         myrv.setLayoutManager(new LinearLayoutManager(getActivity()));
         myrv.setAdapter(myAdapter);
-//            myrv.setItemAnimator(new DefaultItemAnimator());
+//        myrv.setItemAnimator(new DefaultItemAnimator());
 
         return rootView;
     }
@@ -125,9 +130,9 @@ public class TabRoom extends Fragment {
                             // set all parameters in room list from snapshot data and notify the adapter to update the values on view
                             RoomList.get(position).setCurrentTemp(Integer.parseInt(snapshot.get("current_temp").toString()));
                             RoomList.get(position).setCurrentHumidity(Integer.parseInt(snapshot.get("current_humidity").toString()));
-                            RoomList.get(position).setTargetTemp(Integer.parseInt(snapshot.get("target_temp").toString()));
+//                            RoomList.get(position).setTargetTemp(Integer.parseInt(snapshot.get("target_temp").toString()));
                             RoomList.get(position).setBatteryPercent(Integer.parseInt(snapshot.get("battery_percent").toString()));
-                            myAdapter.notifyDataSetChanged();
+                            myAdapter.notifyItemChanged(position);
                         }
                     }
                 });
@@ -238,22 +243,22 @@ public class TabRoom extends Fragment {
                 holder.room_battery_percent.setText("N/A");
             }
 
+
             holder.room_temp_up.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     RoomList.get(position).TargetTemp++;
                     setRoomTargetTemp(user.getEmail(), RoomList.get(position).getName(), RoomList.get(position).TargetTemp);
-                    myAdapter.notifyDataSetChanged();
+                    myAdapter.notifyItemChanged(position);
                 }
             });
 
             holder.room_temp_down.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Toast.makeText(getContext(), "Temp Down", Toast.LENGTH_LONG).show();
                     RoomList.get(position).TargetTemp--;
                     setRoomTargetTemp(user.getEmail(), RoomList.get(position).getName(), RoomList.get(position).TargetTemp);
-                    myAdapter.notifyDataSetChanged();
+                    myAdapter.notifyItemChanged(position);
                 }
             });
 
