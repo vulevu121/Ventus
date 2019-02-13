@@ -1,6 +1,8 @@
 package com.vle.ventus;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -24,8 +26,7 @@ import java.util.List;
 
 
 public class TabActivity extends AppCompatActivity {
-
-    /**
+        /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
      * {@link FragmentPagerAdapter} derivative, which will keep every
@@ -41,9 +42,12 @@ public class TabActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private FirebaseAuth mAuth;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_tab);
 
         mAuth = FirebaseAuth.getInstance();
@@ -86,6 +90,8 @@ public class TabActivity extends AppCompatActivity {
             }
         });
 
+
+
     }
 
 
@@ -112,7 +118,7 @@ public class TabActivity extends AppCompatActivity {
                 break;
             case R.id.action_settings:
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.action_logout:
                 mAuth.signOut();
@@ -128,6 +134,18 @@ public class TabActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    /**
+     * Called when a shared preference is changed, added, or removed. This
+     * may be called even if a preference is set to its existing value.
+     *
+     * <p>This callback will be run on your main thread.
+     *
+     * @param sharedPreferences The {@link SharedPreferences} that received
+     *                          the change.
+     * @param key               The key of the preference that was changed, added, or
+     */
+
 
 //    /**
 //     * A placeholder fragment containing a simple view.

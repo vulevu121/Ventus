@@ -1,14 +1,13 @@
 package com.vle.ventus;
 
+// custom class for rooms
 public class Room {
-
+    // all temperatures are stored as celsius
     private String Name;
     private Integer CurrentTemp;
     private Integer CurrentHumidity;
-    public Integer TargetTemp;
     private Integer BatteryPercent;
-
-//    private int Thumbnail;
+    public Integer TargetTemp;
 
     public Room() {
 
@@ -41,10 +40,6 @@ public class Room {
 
     public Integer getBatteryPercent() { return BatteryPercent; }
 
-//    public int getThumbnail() {
-//        return Thumbnail;
-//    }
-
     public void setName(String name) {
         Name = name;
     }
@@ -63,7 +58,4 @@ public class Room {
         BatteryPercent = batteryPercent;
     }
 
-//    public void setThumbnail(int thumbnail) {
-//        Thumbnail = thumbnail;
-//    }
 }
