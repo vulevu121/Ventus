@@ -1,15 +1,12 @@
 package com.vle.ventus;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -36,21 +33,22 @@ import javax.annotation.Nullable;
 
 
 public class TabRoom extends Fragment {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
+    private ProgressBar progress;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseUser user;
     List<Room> RoomList;
     RecyclerViewAdapter myAdapter;
-    FirebaseUser user;
-    private ProgressBar progress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_room, container, false);
-//            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-//            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+        // get firebase auth instance
         mAuth = FirebaseAuth.getInstance();
+
+        // list for all rooms
         RoomList = new ArrayList<>();
 
         // get current user and all rooms from user
@@ -61,27 +59,28 @@ public class TabRoom extends Fragment {
             getAllRoomsFromUser(userEmail);
         }
 
-
+        // spinning progress while loading all rooms and data
         progress = (ProgressBar) rootView.findViewById(R.id.tabProgressBar);
         showProgress();
 
-//        RoomList.add(new Room("Living Room", 75, 72));
-//        RoomList.add(new Room("Dining Room", 77, 72));
-//        RoomList.add(new Room("Office", 67, 72));
-//        RoomList.add(new Room("Tri's Room", 66, 75));
-//        RoomList.add(new Room("Khanh's Room", 69, 75));
-//        RoomList.add(new Room("John's Room", 65, 72));
-//        RoomList.add(new Room("Vu's Room", 68, 77));
-
+        // create a scrollable list of elements based on large data sets or data
+        // that frequently changes
         RecyclerView myrv = rootView.findViewById(R.id.fragment_room_recyclerview);
+
+        // RecyclerView adapter that provides a binding from an app specific data set
+        // to views that are displayed within a RecyclerView
         myAdapter = new RecyclerViewAdapter(getActivity(), RoomList);
+
+        // set the RecyclerView layout manager
         myrv.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        // set the RecyclerView adapter to the RecyclerView itself
         myrv.setAdapter(myAdapter);
-//        myrv.setItemAnimator(new DefaultItemAnimator());
 
         return rootView;
     }
 
+    // get all rooms from user account and grab all data fields under each room
     private void getAllRoomsFromUser(final String userEmail) {
         String path = "/user/" + userEmail + "/room";
         db.collection(path)
@@ -94,10 +93,10 @@ public class TabRoom extends Fragment {
                             for (QueryDocumentSnapshot doc : task.getResult()) {
                                 String roomId = doc.getId();
 
-                                Integer currentTemp = 0;
-                                Integer currentHumidity = 0;
-                                Integer targetTemp = 0;
-                                Integer batteryPercent = 0;
+                                Integer currentTemp;
+                                Integer currentHumidity;
+                                Integer targetTemp;
+                                Integer batteryPercent;
 
                                 try {
                                     currentTemp = Integer.valueOf(doc.get("current_temp").toString());
@@ -105,13 +104,15 @@ public class TabRoom extends Fragment {
                                     targetTemp = Integer.valueOf(doc.get("target_temp").toString());
                                     batteryPercent = Integer.valueOf(doc.get("battery_percent").toString());
                                 } catch (Exception e) {
-                                    currentTemp = 9999;
-                                    currentHumidity = 9999;
-                                    targetTemp = 9999;
-                                    batteryPercent = 9999;
+                                    currentTemp = null;
+                                    currentHumidity = null;
+                                    targetTemp = null;
+                                    batteryPercent = null;
                                 }
-
+                                // add each room with their corresponding data fields
                                 addRoom(roomId, currentTemp, currentHumidity, targetTemp, batteryPercent);
+
+                                // add listeners to update app when data fields are changed
                                 addRoomListener(userEmail, roomId, i++);
                                 hideProgress();
                             }
@@ -120,6 +121,7 @@ public class TabRoom extends Fragment {
                 });
     }
 
+    // add a snapshot listener for data fields of each room that may change like temp and humidity
     private void addRoomListener(String userEmail, String room, final Integer position) {
         String path = "/user/" + userEmail + "/room/" + room;
         db.document(path)
@@ -132,12 +134,15 @@ public class TabRoom extends Fragment {
                             RoomList.get(position).setCurrentHumidity(Integer.parseInt(snapshot.get("current_humidity").toString()));
 //                            RoomList.get(position).setTargetTemp(Integer.parseInt(snapshot.get("target_temp").toString()));
                             RoomList.get(position).setBatteryPercent(Integer.parseInt(snapshot.get("battery_percent").toString()));
+
+                            // notify the view to update the displayed data
                             myAdapter.notifyItemChanged(position);
                         }
                     }
                 });
     }
 
+    // grab all devices from each room and corresponding data fields
     private void getAllDevicesFromRoom(String userEmail, String room) {
         String path = "/user/" + userEmail + "/room/" + room + "/device";
         db.collection(path)
@@ -154,19 +159,20 @@ public class TabRoom extends Fragment {
                 });
     }
 
-    private void setRoomTargetTemp(String userEmail, String room, Integer targetTemp) {
+    // update the target temp on firestore
+    private void updateRoomTargetTempOnFirestore(String userEmail, String room, Integer targetTemp) {
         String path = "/user/" + userEmail + "/room/" + room;
         db.document(path).update("target_temp", targetTemp);
     }
 
+    // add the room into the room list and notify the data set has changed
     private void addRoom(String room, Integer currentTemp, Integer currentHumidity, Integer targetTemp, Integer batteryPercent) {
         RoomList.add(new Room(room, currentTemp, currentHumidity, targetTemp, batteryPercent));
         myAdapter.notifyDataSetChanged();
     }
 
-
+    // RecyclerView adapter, data set, and holder
     public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
-
         private Context mContext;
         private List<Room> mData;
 
@@ -177,15 +183,17 @@ public class TabRoom extends Fragment {
 
         @Override
         public RecyclerViewAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            // instantiates a layout into its corresponding view object
             LayoutInflater mInflater = LayoutInflater.from(mContext);
+            // instantiates a view for each room cardview
             View view = mInflater.inflate(R.layout.cardview_room, parent, false);
             return new RecyclerViewAdapter.MyViewHolder(view);
         }
 
+        // describes an item view and metadata about its place within the RecyclerView
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
             TextView room_name;
-//            ImageView room_img_thumbnail;
             TextView room_current_temp;
             TextView room_current_humidity;
             TextView room_target_temp;
@@ -212,35 +220,33 @@ public class TabRoom extends Fragment {
         @Override
         public void onBindViewHolder(final RecyclerViewAdapter.MyViewHolder holder, final int position) {
             holder.room_name.setText(mData.get(position).getName());
-//            holder.room_img_thumbnail.setImageResource(mData.get(position).getThumbnail());
-
             Integer currentTemp = mData.get(position).getCurrentTemp();
             Integer currentHumidity = mData.get(position).getCurrentHumidity();
             Integer targetTemp = mData.get(position).getTargetTemp();
             Integer batteryPercent = mData.get(position).getBatteryPercent();
 
-            if (currentTemp != 9999) {
+            if (currentTemp != null) {
                 holder.room_current_temp.setText(getString(R.string.tempf_fmt, currentTemp.toString()));
             } else {
                 holder.room_current_temp.setText(R.string.no_data);
             }
 
-            if (currentHumidity != 9999) {
+            if (currentHumidity != null) {
                 holder.room_current_humidity.setText(getString(R.string.percent_fmt, currentHumidity.toString()));
             } else {
                 holder.room_current_humidity.setText(R.string.no_data);
             }
 
-            if (targetTemp != 9999) {
+            if (targetTemp != null) {
                 holder.room_target_temp.setText(getString(R.string.tempf_fmt, targetTemp.toString()));
             } else {
                 holder.room_target_temp.setText(R.string.no_data);
             }
 
-            if (batteryPercent != 9999) {
+            if (batteryPercent != null) {
                 holder.room_battery_percent.setText(getString(R.string.percent_fmt, batteryPercent.toString()));
             } else {
-                holder.room_battery_percent.setText("N/A");
+                holder.room_battery_percent.setText(R.string.no_data);
             }
 
             // on click listeners for up and down buttons
@@ -248,7 +254,7 @@ public class TabRoom extends Fragment {
                 @Override
                 public void onClick(View v) {
                     RoomList.get(position).TargetTemp++;
-                    setRoomTargetTemp(user.getEmail(), RoomList.get(position).getName(), RoomList.get(position).TargetTemp);
+                    updateRoomTargetTempOnFirestore(user.getEmail(), RoomList.get(position).getName(), RoomList.get(position).TargetTemp);
                     myAdapter.notifyItemChanged(position);
                 }
             });
@@ -257,11 +263,11 @@ public class TabRoom extends Fragment {
                 @Override
                 public void onClick(View v) {
                     RoomList.get(position).TargetTemp--;
-                    setRoomTargetTemp(user.getEmail(), RoomList.get(position).getName(), RoomList.get(position).TargetTemp);
+                    updateRoomTargetTempOnFirestore(user.getEmail(), RoomList.get(position).getName(), RoomList.get(position).TargetTemp);
                     myAdapter.notifyItemChanged(position);
                 }
             });
-
+        // create striped pattern for each element
 //        if (position % 2 == 0)
 //            holder.room_layout.setBackgroundColor(Color.RED);
 //        else
@@ -269,6 +275,7 @@ public class TabRoom extends Fragment {
 
         }
 
+        // get total number of rooms
         @Override
         public int getItemCount() {
             return mData.size();
@@ -276,6 +283,7 @@ public class TabRoom extends Fragment {
 
     }
 
+    // show the progress circle
     private void showProgress() {
         if (progress != null) {
             progress.setVisibility(View.VISIBLE);
@@ -283,6 +291,7 @@ public class TabRoom extends Fragment {
 
     }
 
+    // hide the progress circle
     private void hideProgress() {
         if (progress != null) {
             progress.setVisibility(View.GONE);
