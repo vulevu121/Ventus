@@ -1,10 +1,8 @@
 package com.vle.ventus;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -231,6 +229,27 @@ public class TabRoom extends Fragment {
             }
         }
 
+        public String getTemperatureString(Integer temp_f, String temp_pref) {
+            Integer stringFormat = 0;
+            String tempString = "";
+
+            switch (temp_pref) {
+                case "temp_c": {
+                    stringFormat = R.string.tempc_fmt;
+                    double temp_c = (temp_f - 32) * 5.0/9.0;
+                    tempString = String.format("%.0f", temp_c);
+                    break;
+                }
+                case "temp_f": {
+                    stringFormat = R.string.tempf_fmt;
+                    tempString = temp_f.toString();
+                    break;
+                }
+            }
+
+            return getString(stringFormat, tempString);
+        }
+
         @Override
         public void onBindViewHolder(final RecyclerViewAdapter.MyViewHolder holder, final int position) {
             holder.room_name.setText(mData.get(position).getName());
@@ -239,28 +258,11 @@ public class TabRoom extends Fragment {
             Integer targetTemp = mData.get(position).getTargetTemp();
             Integer batteryPercent = mData.get(position).getBatteryPercent();
 
+            SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String tempPref = mSettings.getString("temp_pref", "temp_f");
+
             if (currentTemp != null) {
-                SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                String tempPref = mSettings.getString("temp_pref", "temp_f");
-
-                Integer stringFormat = 0;
-                String tempString = "";
-
-                switch (tempPref) {
-                    case "temp_c": {
-                        stringFormat = R.string.tempc_fmt;
-                        tempString = currentTemp.toString();
-                        break;
-                    }
-                    case "temp_f": {
-                        stringFormat = R.string.tempf_fmt;
-                        double temp_f = currentTemp * 9/5 + 32;
-                        tempString = String.format("%.0f", temp_f);
-                        break;
-                    }
-                }
-
-                holder.room_current_temp.setText(getString(stringFormat, tempString));
+                holder.room_current_temp.setText(getTemperatureString(currentTemp, tempPref));
             } else {
                 holder.room_current_temp.setText(R.string.no_data);
             }
@@ -272,7 +274,7 @@ public class TabRoom extends Fragment {
             }
 
             if (targetTemp != null) {
-                holder.room_target_temp.setText(getString(R.string.tempf_fmt, targetTemp.toString()));
+                holder.room_target_temp.setText(getTemperatureString(targetTemp, tempPref));
             } else {
                 holder.room_target_temp.setText(R.string.no_data);
             }
