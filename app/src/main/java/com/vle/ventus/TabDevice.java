@@ -80,11 +80,11 @@ public class TabDevice extends Fragment {
 
                 device_layout = (LinearLayout) itemView.findViewById(R.id.device_layout);
                 device_name = (TextView) itemView.findViewById(R.id.device_name);
-                device_target_temp = (TextView) itemView.findViewById(R.id.device_target_temp);
+//                device_target_temp = (TextView) itemView.findViewById(R.id.device_target_temp);
                 device_curent_temp = (TextView) itemView.findViewById(R.id.device_current_temp);
                 device_battery = (TextView) itemView.findViewById(R.id.device_battery);
-                device_temp_up = (ImageButton) itemView.findViewById(R.id.device_temp_up);
-                device_temp_down = (ImageButton) itemView.findViewById(R.id.device_temp_down);
+//                device_temp_up = (ImageButton) itemView.findViewById(R.id.device_temp_up);
+//                device_temp_down = (ImageButton) itemView.findViewById(R.id.device_temp_down);
 
             }
         }
@@ -92,27 +92,27 @@ public class TabDevice extends Fragment {
         @Override
         public void onBindViewHolder(RecyclerViewAdapter.MyViewHolder holder, final int position) {
             holder.device_name.setText(mData.get(position).getName());
-            holder.device_target_temp.setText(mData.get(position).getTargetTemp().toString());
+//            holder.device_target_temp.setText(mData.get(position).getTargetTemp().toString());
             holder.device_curent_temp.setText(mData.get(position).getCurrentTemp().toString() + "°F");
             holder.device_battery.setText(mData.get(position).getBattery().toString());
 
-            holder.device_temp_up.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    Toast.makeText(getContext(), "Temp Up", Toast.LENGTH_LONG).show();
-                    DeviceList.get(position).TargetTemp++;
-                    myAdapter.notifyDataSetChanged();
-                }
-            });
-
-            holder.device_temp_down.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    Toast.makeText(getContext(), "Temp Down", Toast.LENGTH_LONG).show();
-                    DeviceList.get(position).TargetTemp--;
-                    myAdapter.notifyDataSetChanged();
-                }
-            });
+//            holder.device_temp_up.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+////                    Toast.makeText(getContext(), "Temp Up", Toast.LENGTH_LONG).show();
+//                    DeviceList.get(position).TargetTemp++;
+//                    myAdapter.notifyDataSetChanged();
+//                }
+//            });
+//
+//            holder.device_temp_down.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+////                    Toast.makeText(getContext(), "Temp Down", Toast.LENGTH_LONG).show();
+//                    DeviceList.get(position).TargetTemp--;
+//                    myAdapter.notifyDataSetChanged();
+//                }
+//            });
 
 //        if (position % 2 == 0)
 //            holder.device_layout.setBackgroundColor(Color.RED);

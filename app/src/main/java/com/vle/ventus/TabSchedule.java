@@ -1,6 +1,7 @@
 package com.vle.ventus;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -81,6 +82,13 @@ public class TabSchedule extends Fragment {
             holder.schedule_name.setText(mData.get(position).getName());
             holder.schedule_time_start.setText(mData.get(position).getTimeStart());
             holder.schedule_time_end.setText(mData.get(position).getTimeEnd());
+
+            holder.schedule_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getContext(), ScheduleActivity.class));
+                }
+            });
 
 
 //        if (position % 2 == 0)

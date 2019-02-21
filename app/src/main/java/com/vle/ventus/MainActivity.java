@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         mLogin = (Button) findViewById(R.id.buttonLogin);
         mCreate = (Button) findViewById(R.id.buttonCreateLogin);
 
-        mCreate.setVisibility(View.INVISIBLE);
+//        mCreate.setVisibility(View.INVISIBLE);
 
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {

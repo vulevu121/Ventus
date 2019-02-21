@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:circular="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="0dp"
+    tools:context=".ScheduleActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="6dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/baseline_calendar_today_24px" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Schedule 1"
+                android:layout_gravity="center"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="6dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/baseline_timer_24px" />
+
+            <TextView
+                android:id="@+id/time_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12:00 AM"
+                android:textSize="24sp"
+                android:layout_gravity="center"
+                tools:layout_editor_absoluteX="140dp"
+                tools:layout_editor_absoluteY="126dp" />
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/seekBar_start"
+            style="@android:style/Widget.SeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:max="47"
+            android:progress="16"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="6dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/baseline_timer_off_24px" />
+
+            <TextView
+                android:id="@+id/time_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12:00 AM"
+                android:layout_gravity="center"
+                android:textSize="24sp"
+                tools:layout_editor_absoluteX="132dp"
+                tools:layout_editor_absoluteY="417dp" />
+        </LinearLayout>
+
+        <SeekBar
+            android:id="@+id/seekBar_end"
+            style="@android:style/Widget.SeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:max="47"
+            android:progress="20"
+            />
+
+        <CalendarView
+            android:id="@+id/calendarView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

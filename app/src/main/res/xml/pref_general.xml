@@ -3,8 +3,8 @@
     <SwitchPreference
         android:defaultValue="true"
         android:key="example_switch"
-        android:summary="@string/pref_description_social_recommendations"
-        android:title="@string/pref_title_social_recommendations" />
+        android:summary="Allows you to stay signed in and access your temperature controls faster"
+        android:title="Keep me signed in" />
 
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->

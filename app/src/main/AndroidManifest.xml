@@ -31,6 +31,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.vle.ventus.TabActivity" />
         </activity>
+        <activity android:name=".ScheduleActivity" />
+        <activity android:name=".TemperatureActivity"></activity>
     </application>
 
 </manifest>

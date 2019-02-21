@@ -1,6 +1,7 @@
 package com.vle.ventus;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -301,6 +302,13 @@ public class TabRoom extends Fragment {
                     RoomList.get(position).TargetTemp--;
                     updateRoomTargetTempOnFirestore(user.getEmail(), RoomList.get(position).getName(), RoomList.get(position).TargetTemp);
                     myAdapter.notifyItemChanged(position);
+                }
+            });
+
+            holder.room_name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getContext(), TemperatureActivity.class));
                 }
             });
         // create striped pattern for each element
